@@ -42,9 +42,21 @@ void pwmBalancer::setAll(int input_pin, int threshold = 0, int set_period_milli 
     setResting(input_pin, threshold, set_period_milli);
 }
 
-int norm255(int v_in, int v_min, int v_max)
+int pwmBalancer::norm255(int v_in, int v_min, int v_max)
 {
     return (int)(255.0 * ((float)(v_in - v_min) / (float)(v_max - v_min)));
+}
+
+int pwmBalancer::inThreshold(int pwm_input, int center_val, int threshold)
+{
+    int limits[2];
+    limits[0] = (int)((float)center_val - ((float)center_val * ((float)threshold / 100.0)));
+    limits[1] = (int)((float)center_val + ((float)center_val * ((float)threshold / 100.0)));
+    if (pwm_input >= limits[0] && pwm_input <= limits[1])
+    {
+        return center_val;
+    }
+    return pwm_input;
 }
 
 int pwmBalancer::getValueABS(int pwm_input)
@@ -96,5 +108,6 @@ int pwmBalancer::getValueRLT(int pwm_input)
     {
         bottom_value = pwm_input;
     }
+
     return -norm255(pwm_input, bottom_value, resting_value);
 }

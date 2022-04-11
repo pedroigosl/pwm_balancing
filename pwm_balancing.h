@@ -26,6 +26,7 @@ private:
     int threshold = 0;
     int setting_time = 5000;
     int norm255(int v_in, int v_min, int v_max);
+    int inThreshold(int pwm_input, int center_val, int threshold);
 };
 
 #endif
