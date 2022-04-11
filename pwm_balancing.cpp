@@ -8,16 +8,38 @@ pwmBalancer::~pwmBalancer()
 {
 }
 
-void pwmBalancer::setLimits(int pwm_input)
+void pwmBalancer::setLimits(int input_pin, int set_period_milli = setting_time)
+{
+    unsigned long start = millis();
+    unsigned long current = millis();
+
+    int input_value = analogRead(input_pin);
+    top_value = input_value;
+    bottom_value = input_value;
+
+    while (current - start < set_period_milli)
+    {
+        input_value = analogRead(input_pin);
+        if (input_value > top_value)
+        {
+            top_value = input_value;
+        }
+        if (input_value < bottom_value)
+        {
+            bottom_value = input_value;
+        }
+        current = millis();
+    }
+}
+
+void pwmBalancer::setResting(int input_pin, int threshold = 0, int set_period_milli = setting_time)
 {
 }
 
-void pwmBalancer::setResting(int pwm_input, int threshold = 0)
+void pwmBalancer::setAll(int input_pin, int threshold = 0, int set_period_milli = setting_time)
 {
-}
-
-void pwmBalancer::setAll(int pwm_input, int threshold = 0)
-{
+    setLimits(input_pin, set_period_milli);
+    setResting(input_pin, threshold, set_period_milli);
 }
 
 int norm255(int v_in, int v_min, int v_max)
