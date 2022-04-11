@@ -24,6 +24,7 @@ private:
     int *bottom_value = NULL;
     int *resting_value = NULL;
     int threshold = 0;
+    int norm255(int v_in, int v_min, int v_max);
 };
 
 #endif
