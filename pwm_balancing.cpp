@@ -34,6 +34,28 @@ void pwmBalancer::setLimits(int input_pin, int set_period_milli = setting_time)
 
 void pwmBalancer::setResting(int input_pin, int threshold = 0, int set_period_milli = setting_time)
 {
+    unsigned long start = millis();
+    unsigned long current = millis();
+
+    int input_value = analogRead(input_pin);
+    int top_value_local = input_value;
+    int bottom_value_local = input_value;
+
+    while (current - start < set_period_milli)
+    {
+        input_value = analogRead(input_pin);
+        if (input_value > top_value_local)
+        {
+            top_value_local = input_value;
+        }
+        if (input_value < bottom_value_local)
+        {
+            bottom_value_local = input_value;
+        }
+        current = millis();
+    }
+    resting_value = (top_value_local + bottom_value_local) / 2;
+    this->threshold = threshold;
 }
 
 void pwmBalancer::setAll(int input_pin, int threshold = 0, int set_period_milli = setting_time)
@@ -96,6 +118,8 @@ int pwmBalancer::getValueRLT(int pwm_input)
     {
         return -256;
     }
+
+    // change threshold here
     if (pwm_input >= resting_value)
     {
         if (pwm_input > top_value)
