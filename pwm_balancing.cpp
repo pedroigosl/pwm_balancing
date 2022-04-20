@@ -119,19 +119,18 @@ int pwmBalancer::getValueRLT(int pwm_input)
         return -256;
     }
 
-    // change threshold here
+    int end_value = inThreshold(pwm_input, resting_value, threshold);
     if (pwm_input >= resting_value)
     {
         if (pwm_input > top_value)
         {
             top_value = pwm_input;
         }
-        return norm255(pwm_input, resting_value, top_value);
+        return norm255(end_value, resting_value, top_value);
     }
     if (pwm_input < bottom_value)
     {
         bottom_value = pwm_input;
     }
-
-    return -norm255(pwm_input, bottom_value, resting_value);
+    return -norm255(end_value, bottom_value, resting_value);
 }
