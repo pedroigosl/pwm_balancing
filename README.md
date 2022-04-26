@@ -12,14 +12,13 @@ The library models balancer objects with top, bottom and resting values, with op
 
 ## How to use
 
-1 - You first need to instantiate a balancer and set your limits and parameter. 
-> **(polymorphism not yet implemented)** You can either do it all directly using constructors or use ***set*** functions later
+1 - You first need to instantiate a balancer and set your limits and parameter. You can either do it all directly using constructors or use ***set*** functions later
 
 2 - Use the object's normalizing functions on incoming pwm signal
 - ***getValueABS***
 - ***getValueRLT***
 
-> **(recovery functions not yet implemented)** 3 - If needed, you can recover values using ***get*** functions
+3 - If needed, you can recover values using ***get*** functions
 
 ## Example
 
