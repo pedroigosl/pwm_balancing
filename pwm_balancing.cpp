@@ -4,6 +4,16 @@ pwmBalancer::pwmBalancer()
 {
 }
 
+pwmBalancer::pwmBalancer(int input_pin, int set_period_milli = setting_time)
+{
+    setLimits(input_pin, set_period_milli);
+}
+
+pwmBalancer::pwmBalancer(int input_pin, int threshold = 0, int set_period_milli = setting_time)
+{
+    setAll(input_pin, threshold, set_period_milli);
+}
+
 pwmBalancer::~pwmBalancer()
 {
 }
@@ -133,4 +143,78 @@ int pwmBalancer::getValueRLT(int pwm_input)
         bottom_value = pwm_input;
     }
     return -norm255(end_value, bottom_value, resting_value);
+}
+
+int *pwmBalancer::getLimits()
+{
+    try
+    {
+        if (top_value == NULL || bottom_value == NULL)
+        {
+            throw;
+        }
+    }
+    catch (...)
+    {
+        int limits[2];
+        limits[0] = -256;
+        limits[1] = -256;
+        return limits;
+    }
+
+    int limits[2];
+    limits[0] = bottom_value;
+    limits[1] = top_value;
+    return limits;
+}
+
+int pwmBalancer::getResting()
+{
+    try
+    {
+        if (resting_value == NULL)
+        {
+            throw;
+        }
+    }
+    catch (...)
+    {
+        return -256;
+    }
+    return resting_value;
+}
+
+int *pwmBalancer::getAll()
+{
+    try
+    {
+        if (top_value == NULL || bottom_value == NULL || resting_value == NULL)
+        {
+            throw;
+        }
+    }
+    catch (...)
+    {
+        int limits[3];
+        limits[0] = -256;
+        limits[1] = -256;
+        limits[2] = -256;
+        return limits;
+    }
+
+    int limits[3];
+    limits[0] = bottom_value;
+    limits[1] = resting_value;
+    limits[2] = top_value;
+    return limits;
+}
+
+int pwmBalancer::getThreshold()
+{
+    return threshold;
+}
+
+int pwmBalancer::getSetTime()
+{
+    return setting_time;
 }

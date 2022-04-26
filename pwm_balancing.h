@@ -6,7 +6,12 @@
 class pwmBalancer
 {
 public:
+    // just instantiates
     pwmBalancer();
+    // instantiates and set limits
+    pwmBalancer(int input_pin, int set_period_milli);
+    // instantiates, set all
+    pwmBalancer(int input_pin, int threshold, int set_period_milli);
     ~pwmBalancer();
     // registers pwm signal limits
     void setLimits(int input_pin, int set_period_milli);
@@ -18,6 +23,16 @@ public:
     int getValueABS(int pwm_input);
     // get value in [-255, 255] from bottom to top, where resting == 0
     int getValueRLT(int pwm_input);
+
+    int *getLimits();
+
+    int getResting();
+
+    int *getAll();
+
+    int getThreshold();
+
+    int getSetTime();
 
 private:
     int *top_value = NULL;
